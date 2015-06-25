@@ -19,6 +19,11 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
 
+    meta = MetaInspector.new(@article.url)
+    @article.title = meta.title
+    @article.image = meta.images.best
+    @article.summary = meta.description
+
     if @article.save
       redirect_to articles_url
     else
